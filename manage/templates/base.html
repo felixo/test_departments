@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Управление персоналом</title>
+    </head>
+
+    <body>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'manage/css/bootstrap.min.css' %}" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'manage/css/style.css' %}" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="{% static 'manage/js/bootstrap.min.js' %}" crossorigin="anonymous"></script>
+    <script src="{% static 'manage/js/script.js' %}" crossorigin="anonymous"></script>
+    <div class="header">
+        <a href="{% url 'index' %}" class="name_app"><h2>Управление персоналом</h2></a>
+        <div class="header-right">
+            {% for title, stat, link in menu %}
+            <a {% if stat %}class="active"{% endif %} href="{% url link %}">{{title}}</a>
+            {% endfor %}
+         </div>
+    </div>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            {% for link_name, link_text in bread_crumbs %}
+            <li class="breadcrumb-item active"><a href="{% url link_name %}">{{link_text}}</a></li>
+            {% endfor %}
+        </ol>
+    </nav>
+    {% block content %}{% endblock content %}
+    </body>
+</html>

@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="content">
+        <h2>Выберите раздел</h2>
+        <ul>
+            <li><a href="{% url 'departments' %}">Департаменты</a></li>
+            <li><a href="{% url 'workers' %}">Сотрудники</a></li>
+            <li><a href="{% url 'report' %}">Отчет</a></li>
+        </ul>
+    </div>
+{% endblock content %}

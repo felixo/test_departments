@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <script>
+        $( document ).ready(function() {
+            get_table('api/departments');
+            add_department();
+            $("#myInput").on("keyup", function() {
+                var value = $(this).val().toLowerCase();
+                $(".table_body tr").filter(function() {
+                  $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+        });
+    </script>
+    <div class="content">
+        <h2>{{header}}</h2>
+        <input class="form-control" id="myInput" type="text" placeholder="Поиск.." style="width:90%;">
+        <table class="table table-striped" style="width:90%;">
+            <thead>
+                <tr class="table_head">
+                </tr>
+            </thead>
+          <tbody class="table_body">
+          </tbody>
+        </table>
+        <button type="button" class="btn btn-primary department_add_click" data-toggle="modal" data-target="#add_dep">Добавить</button>
+    </div>
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Удаление департамента</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Вы уверены, что хотите удалить выбранный объект?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                    <button type="button" class="btn btn-primary dep_delete">Удалить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="add_dep" tabindex="-1" role="dialog" aria-labelledby="add_depLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="add_depLabel">Добавить департамент</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="dep_title">Название департамента:</label>
+                        <input type="text" class="form-control" id="dep_title">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                    <button type="button" class="btn btn-primary dep_add">Добавить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
