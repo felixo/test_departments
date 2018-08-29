@@ -1,6 +1,7 @@
 from django.views.generic import TemplateView
 from manage.models import Department
 from api.views import WorkerksView
+from django.db import connection
 
 
 class BaseView(TemplateView):
@@ -52,8 +53,36 @@ class ReportList(BaseView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['bread_crumbs'].append(('report', 'Отчет'))
-        context['report'] = self.get_report(WorkerksView.as_view({'get': "list"})(self.request).data)
+        context['report'] = self.my_custom_sql()
         return context
+
+    def my_custom_sql(self):
+        result_dict = {}
+        with connection.cursor() as cursor:
+            cursor.execute("""SELECT manage_department.title, 
+            (SELECT AVG(manage_workers.sellery) FROM manage_workers WHERE manage_workers.department_id = manage_department.id),
+            w.fio, w.phone, w.sellery
+            FROM manage_department LEFT JOIN manage_workers w on  manage_department.id = w.department_id""")
+            for row in cursor.fetchall():
+                dep, avg, fio, phone, sellery = row
+                if avg:
+                    if dep in result_dict:
+                        result_dict[dep]['workers'].append({
+                            'fio': fio,
+                            'phone': phone,
+                            'sellery': sellery
+                        })
+                        result_dict[dep]['avg'] = avg
+                    else:
+                        result_dict[dep] = {}
+                        result_dict[dep]['workers'] = [{
+                            'fio': fio,
+                            'phone': phone,
+                            'sellery': sellery
+                        }]
+                        result_dict[dep]['avg'] = avg
+
+        return result_dict
 
     def get_report(self, data):
         result = {}

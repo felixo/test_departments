@@ -10,10 +10,10 @@
                 </tr>
             </thead>
           <tbody class="table_body">
-            {% for key, values in report.items %}
+            {% for dep, values in report.items %}
             <tr>
                 <td>
-                    <th colspan="3">{{key}}</th>
+                    <th colspan="3">{{dep}}</th>
                 </td>
             </tr>
             {% for worker in values.workers %}
@@ -31,7 +31,7 @@
             {% endfor %}
             <tr>
                 <td>
-                    <th colspan="3">Средняя ЗП по департаменту: {{values.midle}} р.</th>
+                    <th colspan="3">Средняя ЗП по департаменту: {{values.avg}} р.</th>
                 </td>
             </tr>
             {% endfor %}
